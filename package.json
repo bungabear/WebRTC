@@ -1,0 +1,24 @@
+{
+  "name": "webrtc",
+  "version": "1.0.0",
+  "description": "WebRTC Signal Server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bungabear/WebRTC.git"
+  },
+  "author": "Minjae Son",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bungabear/WebRTC/issues"
+  },
+  "homepage": "https://github.com/bungabear/WebRTC#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-ws": "^3.0.0"
+  }
+}
