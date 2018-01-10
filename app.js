@@ -6,7 +6,21 @@ var expressWs      = require('express-ws')(app);
 var signalClients = [];
 var rooms = {};
 
+app.use('/', express.static(__dirname + '/src'));
+app.use('/signaltest', express.static(__dirname + '/src/signaltest'));
+
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'ejs');
 app.set( 'port', process.env.PORT || 3000 );
+
+// app.get('/signal/callee', function(req,res){
+//   res.render('./src/signaltest/callee');
+// });
+
+// app.get('/signal/caller', function(req,res){
+//   res.render('./src/signaltest/caller');
+// });
+
 
 app.get('/', function(req, res, next){
   res.send('Hello World');  
