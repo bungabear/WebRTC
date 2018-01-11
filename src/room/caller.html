@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PeerConnection Demo caller</title>
+    <style>
+        video {
+            border: 5px solid black;
+            width: 320px;
+            height: 240px;
+        }
+        textarea {
+            width: 320px;
+            height: 240px;            
+        }        
+    </style>
+    <script src="https://unpkg.com/vue"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+</head>
+<body>
+<video id="vid1" autoplay="true" muted="true" playsinline></video>
+<video id="vid2" autoplay playsinline></video>
+<br>
+<button id="btn_start">start</button>
+<input id="room_id"/>
+<div id="app">
+    <button id="btn_refresh_room_list" @click="onUpdateRoomList">refresh room list</button>
+    <div id="roomlist" style="overflow:scroll; width:350px; height:200px;border:1px solid red;" >
+        <ul id="roomlist_id">
+            <li v-for="room in rooms" @click="onClickRoom(room)">
+                {{ room }}
+            </li>
+        </ul>    
+    </div>
+</div>
+</body>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="moWebsocket.js"></script>
+<script src="caller.js"></script>
+</html>

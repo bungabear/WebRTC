@@ -8,6 +8,7 @@ var rooms = {};
 
 app.use('/', express.static(__dirname + '/src'));
 app.use('/signaltest', express.static(__dirname + '/src/signaltest'));
+app.use('/room', express.static(__dirname + '/src/room'));
 
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'ejs');
@@ -127,7 +128,7 @@ app.ws('/room/:room', function(ws, req) {
   }    
 });
 
-
+// app.listen(port)사용하면 ws가 안된다.
 app.listen(app.get( 'port' ), function(){
   console.log( 'Express server listening on port ' + app.get( 'port' ));
 });
