@@ -9,7 +9,12 @@ var rooms = {};
 app.use('/', express.static(__dirname + '/src'));
 app.use('/signaltest', express.static(__dirname + '/src/signaltest'));
 app.use('/room', express.static(__dirname + '/src/room'));
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+  });
+  
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'ejs');
 app.set( 'port', process.env.PORT || 3000 );
@@ -63,6 +68,7 @@ app.ws('/signal', function(ws, req) {
 
 });
 
+
 function send(tgt, code, message) {
   if (tgt) {
       tgt.send(JSON.stringify({ code: code, msg: message}));
@@ -81,9 +87,16 @@ function broadcast(room, from_ws, code, message) {
   });
 }
 
-app.ws('/room/:room', function(ws, req) {
+// app.ws('/room/:room/:nick',function(ws,req){
+//   var room_name = req.params.room;
+//   var nickname = req.params.nick;
+//   broadcast(rooms[room_name], ws, '02', nickname);
+// });
+
+app.ws('/room/:room/:pass?', function(ws, req) {
   try {
     var room_name = req.params.room;
+    var room_name = req.params.pass;
     if (!(room_name in rooms)) {
       console.info({ room: room_name }, "new room created");
         rooms[room_name] = new Set([ws]);

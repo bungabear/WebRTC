@@ -1,6 +1,7 @@
 var g_mc_ws_component = {
     ws: null,
-    url: 'wss://minjae0webrtc.herokuapp.com/room',
+    // url: 'wss://zoops-webrtc-01.herokuapp.com/echo',
+    url: 'wss://127.0.0.1:3000/signal',
     init: function () {
 
     },

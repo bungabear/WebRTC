@@ -10,19 +10,32 @@ var vid1 = document.querySelector('#vid1');
 var vid2 = document.querySelector('#vid2');
 var btn_start = document.querySelector('#btn_start');
 var roomId = document.querySelector('#room_id');
+var btn_nick_change = document.querySelector("#btn_nick_change");
+var nick1 = document.querySelector('#nick1');
+var nick2 = document.querySelector('#nick2');
 
 btn_start.addEventListener('click', onStart);
+btn_nick_change.addEventListener('click', nicksend);
 // ---------------------------------------------------------------------------------
 // Value
 var local_peer = null;
 var localstream = null;
-var SIGNAL_SERVER_HTTP_URL = 'https://minjae0webrtc.herokuapp.com/room';
-var SIGNAL_SERVER_WS_URL = 'wss://minjae0webrtc.herokuapp.com/room';
+var SIGNAL_SERVER_HTTP_URL = 'http://localhost:3000';
+var SIGNAL_SERVER_WS_URL = 'ws://localhost:3000';
 // ---------------------------------------------------------------------------------
 function cbGotStream(stream) {
     trace('Received local stream');
     vid1.srcObject = stream;
     localstream = stream;
+}
+
+function nicksend(){
+    var msg = {
+        code: '02',
+        msg: nick1.value
+    }
+    g_mc_ws_component.sendMessage(JSON.stringify(msg));
+    console.log(nick1.value + 'send');
 }
 
 navigator.mediaDevices.getUserMedia({
@@ -41,7 +54,7 @@ function cbGotRemoteStream(evt) {
         trace('## Received remote stream success');
     }
 }
-
+var debug;
 function onWsMessage(messageEvt) {
     console.info(messageEvt);
 
@@ -52,10 +65,20 @@ function onWsMessage(messageEvt) {
     else if (obj.code == '01') {
         // start
         console.info('start in onWsMessage');
+        nicksend();
     }
     else if (obj.code == '00') {
-        receiveOffer(obj.msg);
-    }    
+        try{
+            var msg = JSON.parse(obj.msg);
+            if(msg.code == '02'){
+                nick2.value = msg.msg;
+                console.info('nick recevied');
+                //return;
+            }
+        } catch(e) {
+            receiveOffer(obj.msg);
+        }
+    }
     else {
         alert('unknown error in onWsMessage');
     }    
@@ -85,7 +108,7 @@ function onStart() {
             );
         }
     );
-
+    
     trace('## start success = create RTCPeerConnection and set callback ');
 }
 
@@ -169,6 +192,7 @@ function onCheckIceCandidateAdded(candidateObject) {
 function onCheckIceCandidateCompleted(descObject) {
     trace('onCheckIceCandidateCompleted');
     g_mc_ws_component.sendMessage(descObject.sdp);
+    // nicksend();nicksend();
 }
 
 var app = new Vue({
