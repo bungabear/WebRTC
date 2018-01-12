@@ -13,6 +13,7 @@ var roomId = document.querySelector('#room_id');
 var btn_nick_change = document.querySelector("#btn_nick_change");
 var nick1 = document.querySelector('#nick1');
 var nick2 = document.querySelector('#nick2');
+var pass = document.querySelector('#room_pass');
 
 btn_start.addEventListener('click', onStart);
 btn_nick_change.addEventListener('click', nicksend);
@@ -20,8 +21,10 @@ btn_nick_change.addEventListener('click', nicksend);
 // Value
 var local_peer = null;
 var localstream = null;
-var SIGNAL_SERVER_HTTP_URL = 'http://localhost:3000';
-var SIGNAL_SERVER_WS_URL = 'ws://localhost:3000';
+// var SIGNAL_SERVER_HTTP_URL = 'https://127.0.0.1:3000';
+// var SIGNAL_SERVER_WS_URL = 'ws://127.0.0.1:3000';
+var SIGNAL_SERVER_HTTP_URL = 'https://minjae0webrtc.herokuapp.com';
+var SIGNAL_SERVER_WS_URL = 'wss://minjae0webrtc.herokuapp.com';
 // ---------------------------------------------------------------------------------
 function cbGotStream(stream) {
     trace('Received local stream');
@@ -88,6 +91,9 @@ function onWsMessage(messageEvt) {
 function onStart() {
 
     var url = SIGNAL_SERVER_WS_URL + '/room/' + roomId.value;
+    // if(pass.value != ""){
+    //     url += '/' + pass.value;
+    // }
     g_mc_ws_component.connect(url, onWsMessage);
 
     var cfg = {
