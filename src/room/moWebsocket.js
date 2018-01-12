@@ -1,5 +1,6 @@
 var g_mc_ws_component = {
     ws: null,
+    // url: 'ws://127.0.0.1:3000/signal',
     url: 'wss://minjae0webrtc.herokuapp.com/signal',
     init: function () {
 
