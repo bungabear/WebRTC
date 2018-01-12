@@ -7,6 +7,7 @@ var signalClients = [];
 var rooms = {};
 
 app.use('/', express.static(__dirname + '/src'));
+app.use('/chat', express.static(__dirname + '/src/chat'));
 app.use('/signaltest', express.static(__dirname + '/src/signaltest'));
 app.use('/room', express.static(__dirname + '/src/room'));
 app.use(function(req, res, next) {
@@ -93,10 +94,12 @@ function broadcast(room, from_ws, code, message) {
 //   broadcast(rooms[room_name], ws, '02', nickname);
 // });
 
-app.ws('/room/:room/:pass?', function(ws, req) {
+app.ws('/room/:room/', function(ws, req) {
   try {
+    console.info(req.params);
     var room_name = req.params.room;
-    var room_name = req.params.pass;
+    var room_pass = req.params.pass;
+    console.info(room_pass);
     if (!(room_name in rooms)) {
       console.info({ room: room_name }, "new room created");
         rooms[room_name] = new Set([ws]);
