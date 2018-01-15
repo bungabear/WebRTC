@@ -21,7 +21,7 @@ btn_nick_change.addEventListener('click', nicksend);
 // Value
 var local_peer = null;
 var localstream = null;
-// var SIGNAL_SERVER_HTTP_URL = 'https://127.0.0.1:3000';
+// var SIGNAL_SERVER_HTTP_URL = 'http://127.0.0.1:3000';
 // var SIGNAL_SERVER_WS_URL = 'ws://127.0.0.1:3000';
 var SIGNAL_SERVER_HTTP_URL = 'https://minjae0webrtc.herokuapp.com';
 var SIGNAL_SERVER_WS_URL = 'wss://minjae0webrtc.herokuapp.com';
@@ -91,9 +91,10 @@ function onWsMessage(messageEvt) {
 function onStart() {
 
     var url = SIGNAL_SERVER_WS_URL + '/room/' + roomId.value;
-    // if(pass.value != ""){
-    //     url += '/' + pass.value;
-    // }
+    if(pass.value != ""){
+        url += '?pass=' + pass.value;
+    }
+    console.info(pass.value);
     g_mc_ws_component.connect(url, onWsMessage);
 
     var cfg = {

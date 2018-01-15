@@ -98,11 +98,12 @@ app.ws('/room/:room/', function(ws, req) {
   try {
     console.info(req.params);
     var room_name = req.params.room;
-    var room_pass = req.params.pass;
-    console.info(room_pass);
+    var room_pass = req.query.pass;
+    if(room_pass == undefined) room_pass = '';
     if (!(room_name in rooms)) {
-      console.info({ room: room_name }, "new room created");
-        rooms[room_name] = new Set([ws]);
+      console.info({ room: room_name, pass: room_pass }, "new room created");
+      rooms[room_name] = new Set([ws]);
+      rooms[room_name].pass = room_pass;
     } else {
       console.info(room_name + ' : ' + rooms[room_name].size);      
       if (rooms[room_name].size >= 2) {
@@ -111,9 +112,16 @@ app.ws('/room/:room/', function(ws, req) {
         ws.close();
       }
       else {
-        rooms[room_name].add(ws);
-        if (rooms[room_name].size == 2) {
-          broadcast(rooms[room_name], null, '01', 'start');
+        if(rooms[room_name].pass == room_pass){
+          rooms[room_name].add(ws);
+          if (rooms[room_name].size == 2) {
+            broadcast(rooms[room_name], null, '01', 'start');
+          }
+        }
+        else {
+          var errmsg = {code : '99', msg : 'invalid password' };
+          ws.send(JSON.stringify(errmsg));
+          ws.close();
         }
       }    
     }
